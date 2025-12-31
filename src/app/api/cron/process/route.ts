@@ -30,7 +30,7 @@ export async function GET(req: Request) {
         // ... rest of logic
 
 
-        const results = [];
+
 
         // Group rules by user to batch Gmail calls
         // (In a real app, we'd handle this more efficiently, maybe one job per user)
