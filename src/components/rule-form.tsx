@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Rule } from "@/types";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent as DialogContentModal, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AiGenerator } from "./ai-generator";
 
 interface RuleFormProps {
     initialData?: Rule;
@@ -232,6 +233,13 @@ export default function RuleForm({ initialData }: RuleFormProps) {
                                     >
                                         <Code2 className="h-3 w-3 mr-1.5" /> HTML
                                     </Button>
+                                    <div className="w-px h-4 bg-border mx-1" />
+                                    <AiGenerator
+                                        onTemplateSelect={(html) => {
+                                            setTemplate(html);
+                                            setReplyFormat('html');
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </CardHeader>
