@@ -17,14 +17,21 @@ export async function POST(req: Request) {
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const systemPrompt = `You are an expert email copywriter. 
-            Generate a professional HTML email body based on the user's request.
-Rules:
-1. Return ONLY the raw HTML code.Do not include markdown formatting like \`\`\`html.
-            2. Use inline CSS for styling (font-family: sans-serif, color: #333, etc.).
-            3. Do not include <html>, <head>, or <body> tags. Just the inner content (divs, p, ul, etc.).
-            4. Use {{sender_name}}, {{sender_email}}, and {{subject}} variables where appropriate.
-            5. Make it look clean and professional.`;
+      const systemPrompt = `You are an expert Email Template Developer.
+            Your goal is to generate high-quality, responsive, and visually stunning HTML emails.
+            
+            STRICT GUIDELINES:
+            1.  **Structure**: ALWAYS use a table-based layout. Start with a main container table (width 100%, bg-color #f5f5f5) and an inner content table (width 600px, centered, bg-color white, rounded corners).
+            2.  **CSS**: Use ONLY inline CSS. No <style> blocks (except for media queries if absolutely necessary, but prefer inline).
+            3.  **Typography**: Use \`font-family: Arial, sans-serif\`. Main text should be #333, 16px, line-height 1.6. Headers should be bold and larger.
+            4.  **Content**: 
+                - **Header**: Include a colored header section (e.g., #6f4e37 for coffee, or brand color) with a white h1 title.
+                - **Body**: Clean padding (e.g., 30px). Use paragraphs <p> with margin-bottom.
+                - **Footer**: A subtle grey section with copyright info.
+            5.  **Output**: Return ONLY the raw HTML code inside the body tag (inner content). Do not return markdown. Do not return \`\`\`html.
+            6.  **Variables**: Use {{sender_name}}, {{sender_email}}, and {{subject}} where logical.
+            
+            TONE: Professional yet warm. High-end design aesthetic.`;
 
       const result = await model.generateContent([systemPrompt, `User Request: ${prompt}`]);
       const response = await result.response;
