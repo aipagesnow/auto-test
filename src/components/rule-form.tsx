@@ -348,20 +348,20 @@ export default function RuleForm({ initialData }: RuleFormProps) {
                             </DialogTitle>
                         </DialogHeader>
                         <div className="flex-1 overflow-y-auto bg-muted/20 p-8">
-                            <Card className="max-w-3xl mx-auto shadow-xl">
+                            <Card className="max-w-3xl mx-auto shadow-xl border-border/50">
                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
-                                <CardHeader className="bg-background border-b pb-6 px-8 pt-8">
+                                <CardHeader className="bg-muted/40 border-b pb-6 px-8 pt-8">
                                     <div className="space-y-3">
-                                        <div className="flex gap-4 text-base">
-                                            <span className="text-muted-foreground w-16 text-right font-medium">To:</span>
-                                            <span className="font-medium bg-muted/30 px-3 py-0.5 rounded text-foreground">John Doe &lt;john@example.com&gt;</span>
+                                        <div className="flex gap-4 text-base items-center">
+                                            <span className="text-muted-foreground w-16 text-right font-medium text-sm uppercase tracking-wide">To</span>
+                                            <span className="font-medium bg-background px-3 py-1 rounded-md border shadow-sm text-foreground">John Doe &lt;john@example.com&gt;</span>
                                         </div>
-                                        <div className="flex gap-4 text-base">
-                                            <span className="text-muted-foreground w-16 text-right font-medium">From:</span>
+                                        <div className="flex gap-4 text-base items-center">
+                                            <span className="text-muted-foreground w-16 text-right font-medium text-sm uppercase tracking-wide">From</span>
                                             <span className="font-medium text-foreground">Your Name &lt;your.email@example.com&gt;</span>
                                         </div>
-                                        <div className="flex gap-4 text-base">
-                                            <span className="text-muted-foreground w-16 text-right font-medium">Sub:</span>
+                                        <div className="flex gap-4 text-base items-center">
+                                            <span className="text-muted-foreground w-16 text-right font-medium text-sm uppercase tracking-wide">Sub</span>
                                             <span className="font-medium text-foreground text-lg">Re: {subject || "Application"}</span>
                                         </div>
                                     </div>
