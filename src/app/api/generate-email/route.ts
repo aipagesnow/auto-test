@@ -92,6 +92,35 @@ export async function POST(req: Request) {
         </td>
       </tr>
     </table>`;
+      } else if (lowerPrompt.includes("order") || lowerPrompt.includes("thank")) {
+        html = `
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5f5f5; font-family: Arial, sans-serif; padding: 40px 0;">
+      <tr>
+        <td align="center">
+          <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border-radius:8px; overflow:hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <tr>
+              <td style="background-color:${headerColor}; padding:40px 30px; text-align:center;">
+                <h1 style="color:#ffffff; margin:0; font-size:28px;">Thanks for your order! ☕</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:40px; color:#333333; font-size:16px; line-height:1.6;">
+                <p style="margin-top:0;">Hi {{sender_name}},</p>
+                <p>Thank you so much for your order! We’re already preparing your coffee with care and can’t wait for you to enjoy it.</p>
+                <p>Once your order ships, you’ll receive another email with tracking details so you can follow it every step of the way.</p>
+                <p>If you have any questions, feel free to reply to this email — we’re always happy to help.</p>
+                <p style="margin-bottom:0;">With love and great coffee,<br><strong>The ${brandName} Team</strong></p>
+              </td>
+            </tr>
+            <tr>
+              <td style="background-color:#fafafa; padding:20px; text-align:center; color:#888888; font-size:12px;">
+                &copy; 2026 ${brandName}. All rights reserved.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>`;
       } else if (lowerPrompt.includes("welcome")) {
         html = `
     <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5f5f5; font-family: Arial, sans-serif; padding: 40px 0;">
