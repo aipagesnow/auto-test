@@ -347,10 +347,10 @@ export default function RuleForm({ initialData }: RuleFormProps) {
                                 Email Preview
                             </DialogTitle>
                         </DialogHeader>
-                        <div className="flex-1 overflow-y-auto bg-muted/20 p-8">
-                            <Card className="max-w-3xl mx-auto shadow-xl border-border/50">
+                        <div className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/50 p-8">
+                            <Card className="max-w-3xl mx-auto shadow-xl border-border/50 bg-background">
                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
-                                <CardHeader className="bg-muted/40 border-b pb-6 px-8 pt-8">
+                                <CardHeader className="bg-slate-50 dark:bg-slate-900 border-b pb-6 px-8 pt-8">
                                     <div className="space-y-3">
                                         <div className="flex gap-4 text-base items-center">
                                             <span className="text-muted-foreground w-16 text-right font-medium text-sm uppercase tracking-wide">To</span>
