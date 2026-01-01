@@ -71,15 +71,15 @@ export function AiGenerator({ onTemplateSelect }: AiGeneratorProps) {
                     <span className="text-xs font-medium">Magic Create</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[700px] h-[85vh] flex flex-col gap-0 p-0 overflow-hidden">
-                <DialogHeader className="px-6 py-4 border-b bg-muted/10">
+            <DialogContent className="sm:max-w-[700px] h-[85vh] flex flex-col gap-0 p-0 overflow-hidden bg-background">
+                <DialogHeader className="px-6 py-4 border-b bg-slate-50 dark:bg-slate-900">
                     <DialogTitle className="flex items-center gap-2">
                         <Wand2 className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                         AI Email Generator
                     </DialogTitle>
                 </DialogHeader>
 
-                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-background">
                     {/* Input Section */}
                     <div className="space-y-3">
                         <Label htmlFor="prompt" className="text-base font-medium">Describe your email</Label>
@@ -87,7 +87,7 @@ export function AiGenerator({ onTemplateSelect }: AiGeneratorProps) {
                             <Textarea
                                 id="prompt"
                                 placeholder="e.g. A polite but firm email declining a meeting request, suggesting a future time in 2 months..."
-                                className="min-h-[100px] resize-none pr-20 text-base"
+                                className="min-h-[100px] resize-none pr-20 text-base bg-background"
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                             />
@@ -121,7 +121,7 @@ export function AiGenerator({ onTemplateSelect }: AiGeneratorProps) {
                                 </div>
                             </div>
 
-                            <Card className="border-purple-200 dark:border-purple-900 bg-slate-50 dark:bg-slate-950/50 shadow-sm overflow-hidden">
+                            <Card className="border-purple-200 dark:border-purple-900 bg-slate-50 dark:bg-slate-950 shadow-sm overflow-hidden">
                                 <div className="h-1 w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500" />
                                 <CardContent className="p-6 overflow-x-auto">
                                     <div
@@ -137,7 +137,7 @@ export function AiGenerator({ onTemplateSelect }: AiGeneratorProps) {
                     )}
 
                     {!generatedHtml && !loading && (
-                        <div className="text-center py-12 text-muted-foreground/50 border-2 border-dashed rounded-lg">
+                        <div className="text-center py-12 text-muted-foreground/50 border-2 border-dashed rounded-lg bg-slate-50/50 dark:bg-slate-900/50">
                             <Wand2 className="h-12 w-12 mx-auto mb-3 opacity-20" />
                             <p>Enter a description above to let the AI work its magic ✨</p>
                         </div>
@@ -151,7 +151,7 @@ export function AiGenerator({ onTemplateSelect }: AiGeneratorProps) {
                     )}
                 </div>
 
-                <DialogFooter className="border-t p-4 bg-muted/10">
+                <DialogFooter className="border-t p-4 bg-slate-50 dark:bg-slate-900">
                     <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
                     <Button
                         onClick={handleUseTemplate}
