@@ -1,10 +1,10 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge" // Need to create Badge
-import { Edit2, Trash2, Clock } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Edit2, Trash2, Clock, Mail, CheckCircle2 } from "lucide-react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Rule } from "@/types"
@@ -20,48 +20,66 @@ export function RuleCard({ rule }: RuleCardProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            className="group h-full"
         >
-            <Card className="h-full flex flex-col overflow-hidden transition-all hover:shadow-md border-border/50">
-                <CardHeader className="pb-3">
+            <Card className="h-full flex flex-col overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 border-border/60 bg-card/50 backdrop-blur-sm">
+                <CardHeader className="pb-3 border-b border-border/40 bg-muted/20">
                     <div className="flex justify-between items-start">
-                        <div>
-                            <CardTitle className="font-bold text-lg">{rule.name}</CardTitle>
-                            <div className="mt-2 flex flex-wrap gap-2">
+                        <div className="space-y-1">
+                            <CardTitle className="font-bold text-lg flex items-center gap-2">
+                                {rule.name}
+                                {rule.is_active && <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>}
+                            </CardTitle>
+                            <div className="flex flex-wrap gap-2 pt-1">
                                 {rule.conditions.from?.map((email, i) => (
-                                    <span key={i} className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    <Badge key={i} variant="secondary" className="text-[10px] px-2 h-5 font-medium bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 border-blue-200 dark:border-blue-900 truncate max-w-[150px]">
                                         From: {email}
-                                    </span>
+                                    </Badge>
                                 ))}
                                 {rule.conditions.subject && (
-                                    <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                    <Badge variant="outline" className="text-[10px] px-2 h-5 font-medium border-orange-200 text-orange-600 bg-orange-50 dark:bg-orange-950/20 dark:border-orange-900 truncate max-w-[150px]">
                                         Sub: {rule.conditions.subject}
-                                    </span>
+                                    </Badge>
                                 )}
                             </div>
                         </div>
-                        <Switch checked={rule.is_active} />
+                        <Switch checked={rule.is_active} className="data-[state=checked]:bg-green-500" />
                     </div>
                 </CardHeader>
-                <CardContent className="flex-1 pb-3">
-                    <div className="bg-muted/50 p-3 rounded-md border border-border/40">
-                        <p className="text-sm text-muted-foreground line-clamp-3 font-mono">
-                            {rule.reply_template}
-                        </p>
+                <CardContent className="flex-1 py-4">
+                    <div className="relative">
+                        <div className="absolute top-0 left-0 bottom-0 w-1 bg-primary/20 rounded-full"></div>
+                        <div className="pl-4">
+                            <h4 className="text-xs font-semibold text-muted-foreground uppercase mb-1">Reply Template</h4>
+                            <p className="text-sm text-foreground line-clamp-3 font-sans leading-relaxed">
+                                {rule.reply_template}
+                            </p>
+                        </div>
                     </div>
                 </CardContent>
-                <CardFooter className="pt-3 border-t bg-muted/20 flex justify-between items-center text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        <span>Sent: 24</span>
+                <CardFooter className="pt-3 pb-3 border-t bg-muted/30 flex justify-between items-center text-xs text-muted-foreground transition-colors group-hover:bg-muted/50">
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1.5" title="Total sent">
+                            <Mail className="w-3.5 h-3.5" />
+                            <span className="font-medium">24</span>
+                        </div>
+                        <div className="flex items-center gap-1.5" title="Last active">
+                            <Clock className="w-3.5 h-3.5" />
+                            <span className="font-medium">2h ago</span>
+                        </div>
                     </div>
-                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-background/80" asChild>
+
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-x-2 group-hover:translate-x-0">
+                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-background shadow-sm hover:shadow active:scale-95 transition-all" asChild>
                             <Link href={`/dashboard/edit/${rule.id}`}>
-                                <Edit2 className="w-4 h-4 text-primary" />
+                                <Edit2 className="w-3.5 h-3.5 text-foreground" />
                             </Link>
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10">
-                            <Trash2 className="w-4 h-4 text-destructive" />
+                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive active:scale-95 transition-all">
+                            <Trash2 className="w-3.5 h-3.5" />
                         </Button>
                     </div>
                 </CardFooter>
