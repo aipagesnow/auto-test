@@ -21,6 +21,7 @@ export interface Rule {
     name: string;
     conditions: RuleConditions;
     reply_template: string;
+    reply_format?: 'text' | 'html';
     is_active: boolean;
     delay_minutes: number;
     last_triggered?: string;

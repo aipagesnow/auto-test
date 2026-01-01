@@ -18,6 +18,7 @@ create table if not exists public.rules (
   name text not null,
   conditions jsonb not null default '{}'::jsonb, -- Store complex structure: { from: [], subject: '...', operator: 'AND' }
   reply_template text,
+  reply_format text default 'text', -- 'text' or 'html'
   is_active boolean default false,
   delay_minutes integer default 0,
   last_triggered timestamp with time zone,

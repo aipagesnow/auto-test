@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     }
 
     const json = await req.json();
-    const { name, sender, subject, template, isActive } = json;
+    const { name, sender, senders, subject, template, isActive, replyFormat } = json;
 
     // 1. Ensure user exists in our DB
     let { data: user } = await supabaseAdmin
@@ -71,9 +71,13 @@ export async function POST(req: Request) {
     }
 
     // 2. Create the rule
+    const fromList = senders && Array.isArray(senders) && senders.length > 0
+        ? senders
+        : (sender ? [sender] : []);
+
     const conditions = {
         operator: "OR",
-        from: sender ? [sender] : [],
+        from: fromList,
         subject: subject || undefined
     };
 
@@ -84,6 +88,7 @@ export async function POST(req: Request) {
             name,
             conditions,
             reply_template: template,
+            reply_format: replyFormat || 'text',
             is_active: isActive
         }])
         .select()
