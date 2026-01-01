@@ -10,10 +10,11 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, Plus, X, Wand2, Eye, Code2, Type, AlertCircle } from "lucide-react";
+import { Loader2, Plus, X, Wand2, Eye, Code2, Type, AlertCircle, Maximize2 } from "lucide-react";
 import { toast } from "sonner";
 import { Rule } from "@/types";
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent as DialogContentModal, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface RuleFormProps {
     initialData?: Rule;
@@ -31,6 +32,7 @@ export default function RuleForm({ initialData }: RuleFormProps) {
     const [template, setTemplate] = useState(initialData?.reply_template || "");
     const [isActive, setIsActive] = useState(initialData?.is_active ?? true);
     const [replyFormat, setReplyFormat] = useState<'text' | 'html'>(initialData?.reply_format || 'text');
+    const [previewOpen, setPreviewOpen] = useState(false);
 
     // Variable insertion
     const insertVariable = (variable: string) => {
@@ -91,6 +93,35 @@ export default function RuleForm({ initialData }: RuleFormProps) {
         .replace("{{sender_name}}", "John Doe")
         .replace("{{sender_email}}", "john@example.com")
         .replace("{{subject}}", "Re: " + (subject || "Application"));
+
+    const PreviewCardContent = () => (
+        <CardContent className="pt-6 min-h-[400px] bg-background">
+            {replyFormat === 'html' ? (
+                <div
+                    className="prose prose-sm dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{ __html: previewText }}
+                />
+            ) : (
+                <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap font-sans text-foreground">
+                    {previewText || <span className="text-muted-foreground italic">Start typing to see preview...</span>}
+                </div>
+            )}
+
+            {(previewText && replyFormat === 'text') && (
+                <div className="mt-8 text-sm text-muted-foreground">
+                    <p>Best,<br />Automated Responder</p>
+                </div>
+            )}
+
+            <div className="mt-8 pt-6 border-t flex gap-3 opacity-50">
+                <div className="h-8 w-8 rounded-full bg-primary/20" />
+                <div className="space-y-2 flex-1">
+                    <div className="h-2 w-1/3 bg-muted rounded" />
+                    <div className="h-2 w-1/4 bg-muted rounded" />
+                </div>
+            </div>
+        </CardContent>
+    );
 
     return (
         <div className="grid lg:grid-cols-2 gap-8 h-full">
@@ -284,47 +315,62 @@ export default function RuleForm({ initialData }: RuleFormProps) {
                     {replyFormat === 'html' && <Badge variant="outline" className="text-[10px] h-5">HTML Render</Badge>}
                 </div>
 
-                <Card className="bg-muted/30 border-dashed relative overflow-hidden shadow-sm">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-50" />
-                    <CardHeader className="bg-background/80 backdrop-blur-sm border-b pb-4">
-                        <div className="space-y-2">
-                            <div className="flex gap-3 text-sm">
-                                <span className="text-muted-foreground w-12 text-right font-medium">To:</span>
-                                <span className="font-medium bg-muted/50 px-2 rounded text-foreground">John Doe &lt;john@example.com&gt;</span>
+                <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+                    <DialogTrigger asChild>
+                        <Card className="bg-muted/30 border-dashed relative overflow-hidden shadow-sm cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all group">
+                            <div className="absolute top-0 right-0 p-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Badge className="bg-background/80 hover:bg-background text-foreground shadow-sm backdrop-blur-sm gap-1">
+                                    <Maximize2 className="h-3 w-3" /> Expand
+                                </Badge>
                             </div>
-                            <div className="flex gap-3 text-sm">
-                                <span className="text-muted-foreground w-12 text-right font-medium">Sub:</span>
-                                <span className="font-medium text-foreground">Re: {subject || "Application"}</span>
-                            </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="pt-6 min-h-[400px] bg-background">
-                        {replyFormat === 'html' ? (
-                            <div
-                                className="prose prose-sm dark:prose-invert max-w-none"
-                                dangerouslySetInnerHTML={{ __html: previewText }}
-                            />
-                        ) : (
-                            <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap font-sans text-foreground">
-                                {previewText || <span className="text-muted-foreground italic">Start typing to see preview...</span>}
-                            </div>
-                        )}
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-50" />
+                            <CardHeader className="bg-background/80 backdrop-blur-sm border-b pb-4">
+                                <div className="space-y-2">
+                                    <div className="flex gap-3 text-sm">
+                                        <span className="text-muted-foreground w-12 text-right font-medium">To:</span>
+                                        <span className="font-medium bg-muted/50 px-2 rounded text-foreground">John Doe &lt;john@example.com&gt;</span>
+                                    </div>
+                                    <div className="flex gap-3 text-sm">
+                                        <span className="text-muted-foreground w-12 text-right font-medium">Sub:</span>
+                                        <span className="font-medium text-foreground">Re: {subject || "Application"}</span>
+                                    </div>
+                                </div>
+                            </CardHeader>
+                            <PreviewCardContent />
+                        </Card>
+                    </DialogTrigger>
 
-                        {(previewText && replyFormat === 'text') && (
-                            <div className="mt-8 text-sm text-muted-foreground">
-                                <p>Best,<br />Automated Responder</p>
-                            </div>
-                        )}
-
-                        <div className="mt-8 pt-6 border-t flex gap-3 opacity-50">
-                            <div className="h-8 w-8 rounded-full bg-primary/20" />
-                            <div className="space-y-2 flex-1">
-                                <div className="h-2 w-1/3 bg-muted rounded" />
-                                <div className="h-2 w-1/4 bg-muted rounded" />
-                            </div>
+                    <DialogContentModal className="max-w-4xl h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
+                        <DialogHeader className="px-6 py-4 border-b bg-muted/10 flex-row items-center justify-between space-y-0">
+                            <DialogTitle className="flex items-center gap-2">
+                                <Eye className="h-5 w-5 text-primary" />
+                                Email Preview
+                            </DialogTitle>
+                        </DialogHeader>
+                        <div className="flex-1 overflow-y-auto bg-muted/20 p-8">
+                            <Card className="max-w-3xl mx-auto shadow-xl">
+                                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
+                                <CardHeader className="bg-background border-b pb-6 px-8 pt-8">
+                                    <div className="space-y-3">
+                                        <div className="flex gap-4 text-base">
+                                            <span className="text-muted-foreground w-16 text-right font-medium">To:</span>
+                                            <span className="font-medium bg-muted/30 px-3 py-0.5 rounded text-foreground">John Doe &lt;john@example.com&gt;</span>
+                                        </div>
+                                        <div className="flex gap-4 text-base">
+                                            <span className="text-muted-foreground w-16 text-right font-medium">From:</span>
+                                            <span className="font-medium text-foreground">Your Name &lt;your.email@example.com&gt;</span>
+                                        </div>
+                                        <div className="flex gap-4 text-base">
+                                            <span className="text-muted-foreground w-16 text-right font-medium">Sub:</span>
+                                            <span className="font-medium text-foreground text-lg">Re: {subject || "Application"}</span>
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <PreviewCardContent />
+                            </Card>
                         </div>
-                    </CardContent>
-                </Card>
+                    </DialogContentModal>
+                </Dialog>
             </motion.div>
         </div>
     );
